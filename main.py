@@ -7,6 +7,11 @@ import re
 import shap
 from collections import OrderedDict
 
+app = FastAPI()
+
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}
 
 df = pd.read_csv('test.csv')
 descriptions_df = pd.read_csv('descriptions.csv')
@@ -27,7 +32,6 @@ preprocessed_features_names = [re.sub('num_preprocessor__|encoder__','',s) for s
 num_cols = [col for col in df.select_dtypes(include=['int', 'float']).columns if col not in ['SK_ID_CURR']]
 cat_cols = [col for col in df.select_dtypes(exclude=['int', 'float']).columns]
 
-app = FastAPI()
 
 
 
