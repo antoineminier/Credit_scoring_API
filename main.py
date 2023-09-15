@@ -8,8 +8,8 @@ import shap
 from collections import OrderedDict
 
 
-df = pd.read_csv('/Users/antoine/Documents/Data_scientist/P7/Data/Prepared_data/test.csv')
-descriptions_df = pd.read_csv('/Users/antoine/Documents/Data_scientist/P7/Data/Prepared_data/descriptions.csv')
+df = pd.read_csv('test.csv')
+descriptions_df = pd.read_csv('descriptions.csv')
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent
 with open(f"{BASE_DIR}/preprocessor.joblib", "rb") as f:
