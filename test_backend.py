@@ -2,6 +2,7 @@ from pathlib import Path
 import joblib
 import pandas as pd
 import re
+import numpy as np
 
 
 
@@ -16,24 +17,36 @@ class TestBackEnd:
         explainer = joblib.load(f)
 
     df = pd.read_csv('test.csv')
+    descriptions_df = pd.read_csv('descriptions.csv')
 
     id_list = df.loc[:, 'SK_ID_CURR'].values.tolist()
 
     preprocessed_features_names = preprocessor.get_feature_names_out()
     preprocessed_features_names = [re.sub('num_preprocessor__|encoder__','',s) for s in preprocessed_features_names]
 
-    def test_preprocessing(self):
-        for id in ['100001', '100141']:
-            """id 100001 has a NaN in categorical column OCCUPATION_TYPE, id 100141 has a NaN in numerical column EXT_SOURCE_3"""
-            sample = self.df.loc[self.df['SK_ID_CURR']==int(id), ~self.df.columns.isin(['SK_ID_CURR'])]
-            preprocessed_sample = pd.DataFrame(self.preprocessor.transform(sample), columns=self.preprocessed_features_names)
-            assert(preprocessed_sample.isnull().values.any()==False)
+    num_cols = [col for col in df.select_dtypes(include=['int', 'float']).columns if col not in ['SK_ID_CURR']]
+    cat_cols = [col for col in df.select_dtypes(exclude=['int', 'float']).columns]
 
-    def test_predict(self):
-        id = '100005'
-        sample = self.df.loc[self.df['SK_ID_CURR']==int(id), ~self.df.columns.isin(['SK_ID_CURR'])]
-        preprocessed_sample = pd.DataFrame(self.preprocessor.transform(sample), columns=self.preprocessed_features_names)
-        pred = self.classifier.predict(preprocessed_sample)[0].astype(float)
-        pred_proba = self.classifier.predict_proba(preprocessed_sample)[0][0]
-        results = {'prediction': pred, 'probability': pred_proba}
-        assert(((results['prediction']==0) | (results['prediction']==1)) & ((results['prediction']>=0) & (results['prediction']<=1)))
+    """id 100038 has a NaN in columns OCCUPATION_TYPE and EXT_SOURCE_3 (espectively categorical and numerical) > using this id enables testing of NaN handling"""
+    id = '100038'
+    sample = df.loc[df['SK_ID_CURR']==int(id), ~df.columns.isin(['SK_ID_CURR'])]
+    preprocessed_sample = pd.DataFrame(preprocessor.transform(sample), columns=preprocessed_features_names)
+
+    def test_data_files(self):
+        """Check if datasets are empty"""
+        assert((len(self.df)>0) & (len(self.descriptions_df)>0))
+
+    def test_preprocessor(self):
+        """Check if there are still missing values in the sample after preprocessing"""
+        assert(self.preprocessed_sample.isnull().values.any()==False)
+
+    def test_classifier(self):
+        pred = self.classifier.predict(self.preprocessed_sample)[0].astype(float)
+        pred_proba = self.classifier.predict_proba(self.preprocessed_sample)[0][0]
+        assert((pred in [0, 1]) & (pred_proba>=0) & (pred_proba<=1))
+
+    def test_explainer(self):
+        shap_values = self.explainer.shap_values(self.preprocessed_sample)[0]
+        expected_value = self.explainer.expected_value
+        assert((all((value>-1) & (value<1) for value in shap_values))
+               & ((expected_value >=0) & (expected_value <=1)))
