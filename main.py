@@ -37,6 +37,7 @@ cat_cols = [col for col in df.select_dtypes(exclude=['int', 'float']).columns]
 
 @app.get("/get_number_of_features")
 def get_number_of_features():
+    # Return the number of features, which will be used to create a slider in Streamlit to choose how many features to include in the shap waterfall chart (see below explain() function)
     if 'PREDICTION' in df.columns:
         df.drop(columns='PREDICTION', inplace=True)
     return len(df.loc[:, ~df.columns.isin(['SK_ID_CURR'])].columns)
@@ -58,6 +59,7 @@ def predict(id):
 
 @app.get("/descriptions")
 def get_descriptions():
+    # Return a dictionary containing for each feature a description of what this feature is
     descriptions = {}
     for feature in descriptions_df['Column']:
         descriptions[feature] = descriptions_df.loc[descriptions_df['Column']==feature, 'Description'].values[0]
@@ -65,10 +67,15 @@ def get_descriptions():
 
 @app.get("/explain/{id}")
 def explain(id):
+    # Return in a dictionary the necessary data to recreate in frontend a shap Explanantion and then display a shap waterfall chart
+
     sample = df.loc[df['SK_ID_CURR']==int(id), ~df.columns.isin(['SK_ID_CURR'])]
     preprocessed_sample = pd.DataFrame(preprocessor.transform(sample), columns=preprocessed_features_names)
     shap_values = -explainer.shap_values(preprocessed_sample)[0]
 
+    # Match each feature with its shap value — In case a OneHotEncoder is used in the preprocessing, 
+    # the different shap values matching the different features created from each categorical feature are summed up 
+    # to get the overall shap value for the original categorical features
     encoded_features_idx = {}
     for cat_col in cat_cols:
         encoded_features_idx[cat_col]=[]
@@ -82,24 +89,32 @@ def explain(id):
     for col in num_cols:
         features_impact[col]=shap_values[preprocessed_features_names.index(col)]
     
+    # The original data, before preprocessing, which will be displayed as information in the shap waterfall chart
+    # Because Streamlit can't receive missing values, and to report them in a nicer way in the waterfall chart, they are replaced by the string 'Missing value'
     data = sample.copy()
     data[cat_cols] = data[cat_cols].fillna('Missing value')
     data[num_cols] = data[num_cols].fillna('Missing value (replaced by median)')
-    data = list(data.loc[:, features_impact.keys()].values[0])
+    data = list(data.loc[:, features_impact.keys()].values[0]) # 
 
     explanation_dict = {'values': list(features_impact.values()),
-                        'expected_value':1-explainer.expected_value,
-                        'data':data,
-                        'feature_names':list(features_impact.keys())}
+                        'expected_value': 1-explainer.expected_value,
+                        'data': data,
+                        'feature_names': list(features_impact.keys())}
     return explanation_dict
 
 @app.get("/compare/{id}")
 def compare(id):
+    # Return a list of dictionaries, each containing for a particular feature the necessary data to display a barchart 
+    # to compare the data of the client with the data of the other clients currently applying for a loan
+    
     sample = df.loc[df['SK_ID_CURR']==int(id), ~df.columns.isin(['SK_ID_CURR'])]
     preprocessed_sample = pd.DataFrame(preprocessor.transform(sample), columns=preprocessed_features_names)
     shap_values = -explainer.shap_values(preprocessed_sample)[0]
     df_preprocessed = pd.DataFrame(preprocessor.transform(df.drop(columns=['SK_ID_CURR'])), columns=preprocessed_features_names)
 
+    # Match each feature with its shap value — In case a OneHotEncoder is used in the preprocessing, 
+    # the different shap values matching the different features created from each categorical feature are summed up 
+    # to get the overall shap value for the original categorical features
     encoded_features_idx = {}
     for cat_col in cat_cols:
         encoded_features_idx[cat_col]=[]
