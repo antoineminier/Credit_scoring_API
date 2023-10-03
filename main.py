@@ -13,7 +13,7 @@ app = FastAPI()
 async def root():
     return {"message": "Hello World"}
 
-df = pd.read_csv('test.csv')
+df = pd.read_csv('current_applications.csv')
 descriptions_df = pd.read_csv('descriptions.csv')
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent
