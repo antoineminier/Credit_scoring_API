@@ -19,13 +19,8 @@ class TestBackEnd:
     df = pd.read_csv('test.csv')
     descriptions_df = pd.read_csv('descriptions.csv')
 
-    id_list = df.loc[:, 'SK_ID_CURR'].values.tolist()
-
     preprocessed_features_names = preprocessor.get_feature_names_out()
     preprocessed_features_names = [re.sub('num_preprocessor__|encoder__','',s) for s in preprocessed_features_names]
-
-    num_cols = [col for col in df.select_dtypes(include=['int', 'float']).columns if col not in ['SK_ID_CURR']]
-    cat_cols = [col for col in df.select_dtypes(exclude=['int', 'float']).columns]
 
     """id 100038 has a NaN in columns OCCUPATION_TYPE and EXT_SOURCE_3 (espectively categorical and numerical) > using this id enables testing of NaN handling"""
     id = '100038'
