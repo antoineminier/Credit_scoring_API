@@ -21,7 +21,7 @@ explainer.joblib : the SHAP explainer to calculate the SHAP values of the differ
 
 descriptions.csv : the descriptions of the different features, to display them in the application
 
-test.csv : the data of the current loan applications' clients
+current_applications.csv : the data of the current loan applications' clients
 
 test_backend.py : a part of the tests automatically runned to check if the commits or pull requests can be performed
 
