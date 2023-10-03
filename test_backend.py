@@ -16,7 +16,7 @@ class TestBackEnd:
     with open(f"{BASE_DIR}/explainer.joblib", "rb") as f:
         explainer = joblib.load(f)
 
-    df = pd.read_csv('test.csv')
+    df = pd.read_csv('current_applications.csv')
     descriptions_df = pd.read_csv('descriptions.csv')
 
     preprocessed_features_names = preprocessor.get_feature_names_out()
