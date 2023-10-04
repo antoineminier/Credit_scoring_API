@@ -23,6 +23,8 @@ with open(f"{BASE_DIR}/classifier.joblib", "rb") as f:
     classifier = joblib.load(f)
 with open(f"{BASE_DIR}/explainer.joblib", "rb") as f:
     explainer = joblib.load(f)
+with open(f"{BASE_DIR}/threshold.joblib", "rb") as f:
+    threshold = joblib.load(f)
 
 id_list = df.loc[:, 'SK_ID_CURR'].values.tolist()
 
@@ -48,9 +50,8 @@ def predict(id):
         if int(id) in(id_list):
             sample = df.loc[df['SK_ID_CURR']==int(id), ~df.columns.isin(['SK_ID_CURR'])]
             preprocessed_sample = pd.DataFrame(preprocessor.transform(sample), columns=preprocessed_features_names)
-            pred = classifier.predict(preprocessed_sample)[0].astype(float)
-            pred_proba = classifier.predict_proba(preprocessed_sample)[0][0]
-            results = {'prediction': pred, 'probability': pred_proba}
+            pred_proba = classifier.predict_proba(preprocessed_sample)[0][1]
+            results = {'probability': pred_proba, 'threshold': threshold}
             return results
         else:
             return("The value entered isn't a valid ID.")
@@ -71,7 +72,7 @@ def explain(id):
 
     sample = df.loc[df['SK_ID_CURR']==int(id), ~df.columns.isin(['SK_ID_CURR'])]
     preprocessed_sample = pd.DataFrame(preprocessor.transform(sample), columns=preprocessed_features_names)
-    shap_values = -explainer.shap_values(preprocessed_sample)[0]
+    shap_values = explainer.shap_values(preprocessed_sample)[0]
 
     # Match each feature with its shap value — In case a OneHotEncoder is used in the preprocessing, 
     # the different shap values matching the different features created from each categorical feature are summed up 
@@ -94,10 +95,10 @@ def explain(id):
     data = sample.copy()
     data[cat_cols] = data[cat_cols].fillna('Missing value')
     data[num_cols] = data[num_cols].fillna('Missing value (replaced by median)')
-    data = list(data.loc[:, features_impact.keys()].values[0]) # 
+    data = list(data.loc[:, features_impact.keys()].values[0])
 
     explanation_dict = {'values': list(features_impact.values()),
-                        'expected_value': 1-explainer.expected_value,
+                        'expected_value': explainer.expected_value,
                         'data': data,
                         'feature_names': list(features_impact.keys())}
     return explanation_dict
