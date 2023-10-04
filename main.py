@@ -40,8 +40,6 @@ cat_cols = [col for col in df.select_dtypes(exclude=['int', 'float']).columns]
 @app.get("/get_number_of_features")
 def get_number_of_features():
     # Return the number of features, which will be used to create a slider in Streamlit to choose how many features to include in the shap waterfall chart (see below explain() function)
-    if 'PREDICTION' in df.columns:
-        df.drop(columns='PREDICTION', inplace=True)
     return len(df.loc[:, ~df.columns.isin(['SK_ID_CURR'])].columns)
 
 @app.get("/predict/{id}")
