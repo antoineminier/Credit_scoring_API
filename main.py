@@ -70,7 +70,7 @@ def explain(id):
 
     sample = df.loc[df['SK_ID_CURR']==int(id), ~df.columns.isin(['SK_ID_CURR'])]
     preprocessed_sample = pd.DataFrame(preprocessor.transform(sample), columns=preprocessed_features_names)
-    shap_values = explainer.shap_values(preprocessed_sample)[0]
+    shap_values = explainer.shap_values(preprocessed_sample)[1]
 
     # Match each feature with its shap value — In case a OneHotEncoder is used in the preprocessing, 
     # the different shap values matching the different features created from each categorical feature are summed up 
