@@ -108,7 +108,7 @@ def compare(id):
     
     sample = df.loc[df['SK_ID_CURR']==int(id), ~df.columns.isin(['SK_ID_CURR'])]
     preprocessed_sample = pd.DataFrame(preprocessor.transform(sample), columns=preprocessed_features_names)
-    shap_values = -explainer.shap_values(preprocessed_sample)[0]
+    shap_values = explainer.shap_values(preprocessed_sample)[0]
     df_preprocessed = pd.DataFrame(preprocessor.transform(df.drop(columns=['SK_ID_CURR'])), columns=preprocessed_features_names)
 
     # Match each feature with its shap value — In case a OneHotEncoder is used in the preprocessing, 
