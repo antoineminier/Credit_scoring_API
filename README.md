@@ -1,6 +1,6 @@
 ##  Project description
 
-This repository contains the backend part files of a machine learning web application which predicts the probabiliy for a client to repay a loan. The application also provides descriptive information to compare the client's data with those of the other loan applicants. The backend part is developped using FastAPI, and the frontend part, using Streamlit.
+This repository contains the backend part files of a machine learning web application which predicts the probability for a client to repay a loan. The application also provides descriptive information to compare the client's data with those of the other loan applicants. The backend part is developped using FastAPI, and the frontend part, using Streamlit.
 
 This project of credit scoring web application is the seventh of the OpenClassrooms Data Scientist course. 
 
