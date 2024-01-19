@@ -54,4 +54,4 @@ in the frontend folder :
     
     requirements.txt : the list of packages and their version necessary to run the dashboard.py file
 
-in the .github folder, the workflow.yml file defines the tests automatically runned to check if the commits or pull requests can be performed ; it uses the test_backend.py file in the backend folder
+in the .github folder, the workflow.yml file defines the tests automatically runned to check if the commits or pull requests can be performed ; it uses the test_backend.py file in the backend folder
