@@ -1,6 +1,8 @@
 ##  Project description
 
-This repository contains the files of a machine learning web application which predicts the probability for a client to repay a loan. The application also explains how much each of the client's feature determined the result of the algorithm and provides descriptive information to compare the client's data with those of the other loan applicants. The backend part is developped using FastAPI, and the frontend part, using Streamlit.
+This repository contains the files of a machine learning web application which predicts the probability for a client to repay a loan. The application also explains how much each of the client's feature determined the result of the algorithm and provides descriptive information to compare the client's data with those of the other loan applicants. 
+
+The backend part is developped using FastAPI, and the frontend part, using Streamlit.
 
 Demo of the Streamlit dashboard :
 
@@ -29,6 +31,7 @@ methodology_note.pdf : describes the methodology applied in the modeling process
 presentation.pdf : a slideshow for a 20 minutes presentation of this project.
 
 In the backend folder :
+    
     main.py : the FastAPi code of the backend part of our application
     
     preprocessor.joblib : the pipeline used in main.py to preprocess the client's data
@@ -46,6 +49,7 @@ In the backend folder :
     requirements.txt : the list of packages necessary to run the main.py file
 
 in the frontend folder :
+    
     dashboard.py : the file containing the frontend code with Streamlit
     
     requirements.txt : the list of packages and their version necessary to run the dashboard.py file
