@@ -10,17 +10,17 @@ This project of credit scoring web application is the seventh I worked on in the
 
 The data used are those of the [Home Credit Default Risk Kaggle's competition](https://www.kaggle.com/c/home-credit-default-risk/data).
 
-Address of the backend API on Render : https://credit-scoring-backend.onrender.com/
+Address of the backend API on Render : https://credit-scoring-backend.onrender.com/. 
 To test for example the prediction function, which return the client’s default probability and the threshold it must not exceed for the loan to be granted, add `predict/` and then a client id (examples of valid client id : 100001, 100005, 100013, 100028, 100038).
 Example : https://credit-scoring-backend.onrender.com/predict/100001
 
-Address of the Streamlit dashboard : https://creditscoringapi-dv3azq5m9h995m66syftfg.streamlit.app/
+Address of the Streamlit dashboard : https://creditscoringapi-dv3azq5m9h995m66syftfg.streamlit.app/. 
 Here you just have to enter a valid client id in the provided box to test the app.
 
 
 ## Files description
 
-modeling.ipynb : the jupyter notebook in which the data is prepared and the credit algorithm developed. From this file are exported the .csv and .joblib files used in the backend part of the API, on Render.
+modeling.ipynb : the jupyter notebook in which the credit scoring algorithm is developed. From this file are exported the .csv and .joblib files used in the backend part of the API, on Render.
 
 data_drift_report.html : the data drift report between the past loan applications' data and the current loan applications' data.
 
