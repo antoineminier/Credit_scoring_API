@@ -1,0 +1,21 @@
+Column,Description
+NAME_CONTRACT_TYPE,Identification if loan is cash or revolving
+CODE_GENDER,Gender of the client
+FLAG_OWN_CAR,Flag if the client owns a car
+FLAG_OWN_REALTY,Flag if client owns a house or flat
+CNT_CHILDREN,Number of children the client has
+AMT_INCOME_TOTAL,Income of the client
+AMT_CREDIT,Credit amount of the loan
+AMT_ANNUITY,Loan annuity
+NAME_INCOME_TYPE,"Clients income type (businessman, working, maternity leave,…)"
+NAME_EDUCATION_TYPE,Level of highest education the client achieved
+NAME_FAMILY_STATUS,Family status of the client
+DAYS_BIRTH,Client's age in days at the time of application
+OCCUPATION_TYPE,What kind of occupation does the client have
+EXT_SOURCE_3,Normalized score from external data source
+LTV,Loan To Value : ratio between the credit amount of the loan and the amount of the goods the loan finances
+DTI,Debt To Income : ratio between the loan annuity and the income of the client
+CREDIT_ANNUITY_RATIO,Ratio between the credit amount of the loan and the loan annuity
+DAYS_EMPLOYED_RATIO,Ratio between the number of days before the application the person started current employment and the client's age at the time of application
+INCOME_CREDIT_RATIO,Ratio between the income of the client and the credit amount of the loan
+INCOME_PER_PERSON,Ratio between the income of the client and the number of their family members
