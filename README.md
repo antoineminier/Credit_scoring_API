@@ -6,7 +6,11 @@ The backend part is developped using FastAPI, and the frontend part, using Strea
 
 Demo of the Streamlit dashboard :
 
-https://github.com/antoineminier/Credit_scoring_frontend/assets/143601336/eafe156d-56d5-448e-915d-0b9929176e44
+
+
+https://github.com/antoineminier/Credit_scoring_API/assets/143601336/0211c3c0-19f7-42c1-aa74-b30351f7d93f
+
+
 
 This project of credit scoring web application is the seventh I worked on in the context of my data scientist training at OpenClassrooms.
 
